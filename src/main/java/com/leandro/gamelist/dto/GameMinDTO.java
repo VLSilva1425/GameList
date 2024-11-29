@@ -1,5 +1,6 @@
 package com.leandro.gamelist.dto;
 
+import com.leandro.gamelist.Projections.GameMinProjection;
 import com.leandro.gamelist.entities.Game;
 
 import org.springframework.beans.BeanUtils;
@@ -9,10 +10,8 @@ public class GameMinDTO {
     private Long id;
     private String title;
     private Integer year;
-    private String genre;
-    private String platforms;
-    private Double score;
     private String imgUrl;
+    private String shortDescription;
 
     public GameMinDTO() {
         //TODO Auto-generated constructor stub
@@ -21,6 +20,12 @@ public class GameMinDTO {
     
 
     public GameMinDTO(Game entity) {
+        BeanUtils.copyProperties(entity, this);
+    }
+
+    public GameMinDTO(GameMinProjection entity) {
+        //this.title = entity.getTitle();
+        //this.year = entity.getYear();
         BeanUtils.copyProperties(entity, this);
     }
 
@@ -44,29 +49,24 @@ public class GameMinDTO {
     public void setYear(Integer year) {
         this.year = year;
     }
-    public String getGenre() {
-        return genre;
-    }
-    public void setGenre(String genre) {
-        this.genre = genre;
-    }
-    public String getPlatforms() {
-        return platforms;
-    }
-    public void setPlatforms(String platforms) {
-        this.platforms = platforms;
-    }
-    public Double getScore() {
-        return score;
-    }
-    public void setScore(Double score) {
-        this.score = score;
-    }
+    
     public String getImgUrl() {
         return imgUrl;
     }
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+
+
+    public String getShortDescription() {
+        return shortDescription;
+    }
+
+
+
+    public void setShortDescription(String shortDescription) {
+        this.shortDescription = shortDescription;
     }
 
     

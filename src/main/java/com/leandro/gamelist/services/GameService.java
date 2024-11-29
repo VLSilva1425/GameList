@@ -1,11 +1,11 @@
 package com.leandro.gamelist.services;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.leandro.gamelist.dto.GameDTO;
 import com.leandro.gamelist.dto.GameMinDTO;
@@ -31,5 +31,12 @@ public class GameService {
         List<Game> result = gameRepository.findAll();
 
         return result.stream().map(x -> new GameMinDTO(x)).toList();
+    }
+
+    public GameDTO findById (Long id){
+        Game resultGame = gameRepository.findById(id).get();
+        GameDTO dto = new GameDTO(resultGame);
+        return dto;
+
     }
 }

@@ -1,6 +1,7 @@
 package com.leandro.gamelist.dto;
 
 import com.leandro.gamelist.entities.Game;
+import org.springframework.beans.BeanUtils;
 
 public class GameDTO {
 
@@ -22,15 +23,7 @@ public class GameDTO {
     }
 
     public GameDTO(Game entity){
-    id = entity.getId();
-    title = entity.getTitle();
-    year = entity.getYear();
-    genre = entity.getGenre();
-    platforms = entity.getPlatforms();
-    score = entity.getScore();
-    imgUrl = entity.getImgUrl();
-    shortDescription = entity.getShortDescription();
-    longDescription = entity.getLongDescription();
+        BeanUtils.copyProperties(entity, this);
     }
 
     public Long getId() {

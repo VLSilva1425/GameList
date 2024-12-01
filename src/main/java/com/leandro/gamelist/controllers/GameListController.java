@@ -51,7 +51,7 @@ public class GameListController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(dto);
     }
 
-    // ainda tenho que implentar, não está funcional
+
     @PostMapping("/{listId}/replacement")
     public ResponseEntity<ReplacementDTO> move (@PathVariable Long listId, @RequestBody ReplacementDTO dto){
         gameListService.move(listId, dto.getSourceIndex(),dto.getTargetIndex());

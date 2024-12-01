@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.leandro.gamelist.Projections.GameMinProjection;
 import com.leandro.gamelist.dto.GameListDTO;
+import com.leandro.gamelist.entities.Game;
 import com.leandro.gamelist.entities.GameList;
 import com.leandro.gamelist.repositories.GameListRepository;
 import com.leandro.gamelist.repositories.GameRepository;
@@ -23,6 +24,7 @@ public class GameListService {
     @Autowired
     GameRepository gameRepository;
 
+    // CRIA UMA LISTA
     @Transactional
     public void create(GameListDTO gameList){
         GameList obj = new GameList();
@@ -30,13 +32,16 @@ public class GameListService {
         gameListRepository.save(obj);
     }
 
+    //LISTA TODAS AS LISTAS
     @Transactional(readOnly = true)
     public List<GameListDTO> findAll(){
         List<GameList> result = gameListRepository.findAll();
 
+        // RETORNA O RESULTADO DA PESQUISA DE LISTAS E CONVERTE PARA UM DTO
         return result.stream().map(x -> new GameListDTO(x)).toList();
     }
 
+    // PROCURA UMA LISTA POR ID
     @Transactional(readOnly = true)
     public GameListDTO findById (Long id){
         GameList result = gameListRepository.findById(id).get();
@@ -46,18 +51,27 @@ public class GameListService {
     }
 
 
-    //ainda tenho que implentar nao esta funcional
+    //MOVE UM GAME DE UMA LISTA DE UMA POSIÇAO PARA A OUTRA
     @Transactional
     public void move(Long listId, int sourceIndex, int targetIndex){
-        List<GameMinProjection> list = gameRepository.searchByList(listId);
 
+        //CHAMA UMA LISTA COM JOGOS
+        List<GameMinProjection> list = gameRepository.searchByList(listId);
+        //REMOVE O JOGO ESPECIFICO DA LISTA
         GameMinProjection obj = list.remove(sourceIndex);
+        //ADICIONA O JOGO PARA O INDEX DESEJADO
         list.add(targetIndex, obj);
+        
+        //VERIFICA QUAL O MENOR E O MAIOR INDEX
         int min = sourceIndex < targetIndex ? sourceIndex : targetIndex;
         int max = sourceIndex < targetIndex ? targetIndex : sourceIndex;
 
+        //MOVE OS INDEX APOS A ADIÇAO PARA BAIXO
+        /***NOTA PRESUMO QUE ESSE FOR NÃO SEJA O MAIS ACONSELHAVEL PARA FAZER ISSO, POIS FAZ VARIAS REQUISIÇÕES NO BANCO, CREIO QUE PARA RESOLVER ISSO TENHA QUE MUDAR A QUERY
+         PARA SER MAIS PRATICO***/
         for(int i = min; i <= max; i++){
             gameListRepository.updateBelongingPosition(listId, list.get(i).getId() , i);
         }
     }
+
 }

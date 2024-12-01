@@ -8,11 +8,14 @@ import org.springframework.http.ResponseEntity;
 
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.leandro.gamelist.dto.GameListDTO;
 import com.leandro.gamelist.dto.GameMinDTO;
+import com.leandro.gamelist.dto.ReplacementDTO;
 import com.leandro.gamelist.services.GameListService;
 import com.leandro.gamelist.services.GameService;;
 
@@ -42,10 +45,18 @@ public class GameListController {
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(dto);
     }
 
-    @GetMapping("/{listId}/game")
+    @GetMapping("/{listId}/games")
     public ResponseEntity<List<GameMinDTO>> findByList (@PathVariable Long listId){
         List<GameMinDTO> dto = gameService.findByList(listId);
         return ResponseEntity.status(HttpStatus.ACCEPTED).body(dto);
+    }
+
+    // ainda tenho que implentar, não está funcional
+    @PostMapping("/{listId}/replacement")
+    public ResponseEntity<ReplacementDTO> move (@PathVariable Long listId, @RequestBody ReplacementDTO dto){
+        gameListService.move(listId, dto.getSourceIndex(),dto.getTargetIndex());
+        
+        return ResponseEntity.status(HttpStatus.OK).body(dto);
     }
 
 }

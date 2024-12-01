@@ -10,6 +10,7 @@ import com.leandro.gamelist.Projections.GameMinProjection;
 import com.leandro.gamelist.dto.GameDTO;
 import com.leandro.gamelist.dto.GameMinDTO;
 import com.leandro.gamelist.entities.Game;
+import com.leandro.gamelist.entities.GameList;
 import com.leandro.gamelist.repositories.GameRepository;
 
 
@@ -47,4 +48,6 @@ public class GameService {
         List<GameMinProjection> result = gameRepository.searchByList(listId);
         return result.stream().map(x -> new GameMinDTO(x)).toList();
     }
+
+    
 }

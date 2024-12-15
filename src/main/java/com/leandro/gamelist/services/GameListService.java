@@ -6,10 +6,8 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.leandro.gamelist.Projections.GameMinProjection;
 import com.leandro.gamelist.dto.GameListDTO;
-import com.leandro.gamelist.entities.Game;
 import com.leandro.gamelist.entities.GameList;
 import com.leandro.gamelist.repositories.GameListRepository;
 import com.leandro.gamelist.repositories.GameRepository;
@@ -26,10 +24,11 @@ public class GameListService {
 
     // CRIA UMA LISTA
     @Transactional
-    public void create(GameListDTO gameList){
+    public GameListDTO create(GameListDTO gameList){
         GameList obj = new GameList();
         BeanUtils.copyProperties(gameList, obj);
         gameListRepository.save(obj);
+        return gameList;
     }
 
     //LISTA TODAS AS LISTAS
@@ -67,9 +66,9 @@ public class GameListService {
         int max = sourceIndex < targetIndex ? targetIndex : sourceIndex;
 
         //MOVE OS INDEX APOS A ADIÇAO PARA BAIXO
-        /***NOTA PRESUMO QUE ESSE FOR NÃO SEJA O MAIS ACONSELHAVEL PARA FAZER ISSO, POIS FAZ VARIAS REQUISIÇÕES NO BANCO, CREIO QUE PARA RESOLVER ISSO TENHA QUE MUDAR A QUERY
+        /***NOTA* PRESUMO QUE ESSE FOR NÃO SEJA O MAIS ACONSELHAVEL PARA FAZER ISSO, POIS FAZ VARIAS REQUISIÇÕES NO BANCO, CREIO QUE PARA RESOLVER ISSO TENHA QUE MUDAR A QUERY
          PARA SER MAIS PRATICO***/
-        for(int i = min; i <= max; i++){
+         for(int i = min; i <= max; i++){
             gameListRepository.updateBelongingPosition(listId, list.get(i).getId() , i);
         }
     }
